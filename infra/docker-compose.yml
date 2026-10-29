@@ -1,0 +1,56 @@
+# Local development infrastructure for the permissioned RWA platform.
+#
+# NOT VERIFIED: Docker is not installed in the environment where this file was authored,
+# so `docker compose up` has NOT been executed. Treat this file as unvalidated.
+#
+# Usage:
+#   docker compose -f infra/docker-compose.yml up -d
+#   docker compose -f infra/docker-compose.yml ps
+#   docker compose -f infra/docker-compose.yml down            # stop, keep data
+#   docker compose -f infra/docker-compose.yml down -v         # stop, delete data
+#
+# Secrets are supplied through environment variables only; nothing sensitive is committed.
+# Create a local `.env` (git-ignored) next to this file, or export the variables in your shell.
+
+name: permissioned-rwa-platform
+
+services:
+  postgres:
+    # Pinned patch release — deliberately not a floating `latest` tag.
+    image: postgres:16.4
+    container_name: rwa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-rwa_user}
+      # `:?` makes compose fail fast when the password is not supplied.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      POSTGRES_DB: ${POSTGRES_DB:-rwa_platform}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rwa_user} -d ${POSTGRES_DB:-rwa_platform}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Optional Anvil node for CI convenience.
+  #
+  # The image tag is intentionally left UNPINNED (and the service disabled) because Docker was
+  # unavailable to verify that a matching image tag actually exists. Do not invent a tag.
+  # Before enabling, pin `image:` to the exact Foundry release used locally
+  # (this project was built with Foundry 1.8.7 — see docs/DEPENDENCIES.md).
+  #
+  # anvil:
+  #   image: ghcr.io/foundry-rs/foundry:<PIN-TO-VERIFIED-VERSION>
+  #   container_name: rwa-anvil
+  #   restart: unless-stopped
+  #   entrypoint: ["anvil", "--host", "0.0.0.0", "--chain-id", "31337"]
+  #   ports:
+  #     - "8545:8545"
+
+volumes:
+  postgres-data:

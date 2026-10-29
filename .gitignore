@@ -1,0 +1,38 @@
+# Foundry build artifacts
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Node
+node_modules/
+offchain/node_modules/
+backend/node_modules/
+
+# Environment secrets — NEVER commit
+.env
+*.env.local
+*.key
+*.pem
+*.p12
+*.pfx
+keystore/
+secrets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Build output
+dist/
+offchain/dist/
+
+# Logs
+*.log
+npm-debug.log*

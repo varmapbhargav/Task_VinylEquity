@@ -1,0 +1,29 @@
+{
+  "../vendor/ERC-3643": {
+    "rev": "b6c5fabf86e733ede017fef754d59eeb8f80e3f4"
+  },
+  "lib\\ONCHAINID": {
+    "tag": {
+      "name": "2.2.1",
+      "rev": "a483cda6821e3883497972d36d0c4c1e1693e483"
+    }
+  },
+  "lib\\forge-std": {
+    "tag": {
+      "name": "v1.9.7",
+      "rev": "77041d2ce690e692d6e03cc812b57d1ddaa4d505"
+    }
+  },
+  "lib\\openzeppelin-contracts": {
+    "tag": {
+      "name": "v4.9.6",
+      "rev": "dc44c9f1a4c3b10af99492eed84f83ed244203f6"
+    }
+  },
+  "lib\\openzeppelin-contracts-upgradeable": {
+    "tag": {
+      "name": "v4.9.6",
+      "rev": "2d081f24cac1a867f6f73d512f2022e1fa987854"
+    }
+  }
+}
